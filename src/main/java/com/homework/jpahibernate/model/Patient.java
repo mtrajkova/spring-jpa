@@ -19,4 +19,9 @@ public class Patient {
 
     @ManyToOne
     private Doctor familyDoctor;
+
+    public Patient(String name, String SSN) {
+        this.name = name;
+        this.SSN = SSN;
+    }
 }

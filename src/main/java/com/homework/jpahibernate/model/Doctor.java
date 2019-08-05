@@ -18,7 +18,7 @@ public class Doctor {
     private String name;
     private Specialization specialization;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private DoctorOffice doctorOffice;
     @OneToMany(mappedBy = "familyDoctor", cascade = CascadeType.PERSIST)
     private Set<Patient> patients;
@@ -27,4 +27,9 @@ public class Doctor {
                 joinColumns = @JoinColumn(name = "doctor_id"),
     inverseJoinColumns = @JoinColumn(name = "surgery_id"))
     private Set<Surgery> surgeries;
+
+    public Doctor(String name, Specialization specialization) {
+        this.name = name;
+        this.specialization = specialization;
+    }
 }

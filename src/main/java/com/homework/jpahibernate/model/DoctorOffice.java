@@ -16,6 +16,10 @@ public class DoctorOffice {
     private Long id;
     private String location;
 
-    @OneToOne(mappedBy = "doctorOffice", cascade = CascadeType.PERSIST)
+    public DoctorOffice(String location) {
+        this.location = location;
+    }
+
+    @OneToOne(mappedBy = "doctorOffice")
     private Doctor doctor;
 }

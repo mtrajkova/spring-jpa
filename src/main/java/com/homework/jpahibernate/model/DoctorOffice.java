@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -18,4 +15,7 @@ public class DoctorOffice {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String location;
+
+    @OneToOne(mappedBy = "doctorOffice", cascade = CascadeType.PERSIST)
+    private Doctor doctor;
 }

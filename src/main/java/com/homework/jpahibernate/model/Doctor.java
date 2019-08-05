@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -19,4 +17,14 @@ public class Doctor {
     private Long id;
     private String name;
     private Specialization specialization;
+
+    @OneToOne
+    private DoctorOffice doctorOffice;
+    @OneToMany(mappedBy = "familyDoctor", cascade = CascadeType.PERSIST)
+    private Set<Patient> patients;
+    @ManyToMany
+    @JoinTable(name = "surgery_doctors",
+                joinColumns = @JoinColumn(name = "doctor_id"),
+    inverseJoinColumns = @JoinColumn(name = "surgery_id"))
+    private Set<Surgery> surgeries;
 }

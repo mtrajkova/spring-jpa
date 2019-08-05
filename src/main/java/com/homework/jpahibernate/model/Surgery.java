@@ -5,18 +5,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Patient {
+public class Surgery {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private String name;
-    private String SSN;
-
-    @ManyToOne
-    private Doctor familyDoctor;
+    private Date surgeryTime;
+    @ManyToMany(mappedBy = "surgeries", fetch = FetchType.EAGER)
+    private Set<Doctor> doctors;
 }

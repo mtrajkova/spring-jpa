@@ -93,8 +93,7 @@ public class JpaHibernateApplication implements CommandLineRunner {
 
         System.out.println("TESTING SURGERY");
         System.out.println(surgeryRepository.findById(8L).get().getSurgeryTime());
-
-
+        
         surgery.setDoctors(Stream.of(doctor1, doctor2).collect(Collectors.toSet()));
         surgeryRepository.save(surgery);
 

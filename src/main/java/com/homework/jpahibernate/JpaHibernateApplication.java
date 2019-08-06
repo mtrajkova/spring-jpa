@@ -34,6 +34,7 @@ public class JpaHibernateApplication implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         Patient patient1 = new Patient("Marija Trajkova", "12345");
         Patient patient2 = new Patient("Jon Doe", "09876");
@@ -51,6 +52,9 @@ public class JpaHibernateApplication implements CommandLineRunner {
         doctorRepository.save(doctor1);
         doctorRepository.save(doctor2);
 
+        System.out.println(doctorRepository.findById(1L).get().getName());
+        doctorRepository.findById(1L).get().getPatients().stream().forEach(patient -> System.out.println(patient.getName()));
+
         patient1.setFamilyDoctor(doctor1);
         patient2.setFamilyDoctor(doctor1);
         patient3.setFamilyDoctor(doctor2);
@@ -58,6 +62,14 @@ public class JpaHibernateApplication implements CommandLineRunner {
         patientRepository.save(patient1);
         patientRepository.save(patient2);
         patientRepository.save(patient3);
+
+        //ONE TO ONE
+        DoctorOffice doctorOffice = new DoctorOffice("Bitola");
+        doctorOffice.setDoctor(doctor1);
+        doctorOfficeRepository.save(doctorOffice);
+
+        doctor1.setDoctorOffice(doctorOffice);
+        doctorRepository.save(doctor1);
 
     }
 }

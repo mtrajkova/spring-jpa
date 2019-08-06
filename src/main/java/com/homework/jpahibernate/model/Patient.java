@@ -1,15 +1,15 @@
 package com.homework.jpahibernate.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@Table(name = "patient")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,4 +24,5 @@ public class Patient {
         this.name = name;
         this.SSN = SSN;
     }
+
 }

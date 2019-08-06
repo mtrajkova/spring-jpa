@@ -17,6 +17,7 @@ public class Surgery {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private Date surgeryTime;
+
     @ManyToMany(mappedBy = "surgeries", fetch = FetchType.EAGER)
     private Set<Doctor> doctors;
 }

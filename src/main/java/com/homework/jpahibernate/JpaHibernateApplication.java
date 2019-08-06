@@ -52,7 +52,10 @@ public class JpaHibernateApplication implements CommandLineRunner {
         doctorRepository.save(doctor1);
         doctorRepository.save(doctor2);
 
-        System.out.println(doctorRepository.findById(1L).get().getName());
+        System.out.println("TESTING DOCTOR");
+        System.out.println(doctorRepository.findById(1L).get().getName() + "\n");
+
+        System.out.println("TESTING ONE TO MANY RELATIONSHIP");
         doctorRepository.findById(1L).get().getPatients().stream().forEach(patient -> System.out.println(patient.getName()));
 
         patient1.setFamilyDoctor(doctor1);
@@ -63,6 +66,12 @@ public class JpaHibernateApplication implements CommandLineRunner {
         patientRepository.save(patient2);
         patientRepository.save(patient3);
 
+        System.out.println("TESTING PATIENT");
+        System.out.println(patientRepository.findById(2L).get().getSSN());
+
+        System.out.println("TESTING MANY TO ONE RELATIONSHIP");
+        System.out.println(patientRepository.findById(2L).get().getFamilyDoctor().getName() + "\n");
+
         //ONE TO ONE
         DoctorOffice doctorOffice = new DoctorOffice("Bitola");
         doctorOffice.setDoctor(doctor1);
@@ -70,6 +79,15 @@ public class JpaHibernateApplication implements CommandLineRunner {
 
         doctor1.setDoctorOffice(doctorOffice);
         doctorRepository.save(doctor1);
+
+        System.out.println("TESTING DOCTOR OFFICE");
+        System.out.println(doctorOfficeRepository.findById(5L).get().getLocation());
+
+        System.out.println("TESTING ONE TO ONE RELATIONSHIP - DOCTOR OFFICE SIDE");
+        System.out.println(doctorOfficeRepository.findById(7L).get().getDoctor().getName());
+
+        System.out.println("TESTING ONE TO ONE RELATIONSHIP - DOCTOR SIDE");
+        System.out.println(doctorRepository.findById(1L).get().getDoctorOffice().getLocation());
 
     }
 }

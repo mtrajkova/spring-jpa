@@ -51,10 +51,10 @@ public class JpaHibernateApplication implements CommandLineRunner {
         doctorRepository.save(doctor2);
 
         System.out.println("TESTING DOCTOR");
-        System.out.println(doctorRepository.findById(1L).get().getName() + "\n");
+        System.out.println("Doctor name: " + doctorRepository.findById(doctor1.getId()).get().getName() + "\n");
 
-        System.out.println("TESTING ONE TO MANY RELATIONSHIP");
-        doctorRepository.findById(1L).get().getPatients().stream().forEach(patient -> System.out.println(patient.getName()));
+        System.out.println("TESTING ONE TO MANY RELATIONSHIP -> Dr. House's patients");
+        doctorRepository.findById(doctor1.getId()).get().getPatients().stream().forEach(patient -> System.out.println("Patient name: " + patient.getName()));
 
         patient1.setFamilyDoctor(doctor1);
         patient2.setFamilyDoctor(doctor1);
@@ -64,11 +64,11 @@ public class JpaHibernateApplication implements CommandLineRunner {
         patientRepository.save(patient2);
         patientRepository.save(patient3);
 
-        System.out.println("TESTING PATIENT");
-        System.out.println(patientRepository.findById(2L).get().getSSN());
+        System.out.println("\nTESTING PATIENT");
+        System.out.println("Patient SSN: " + patientRepository.findById(patient2.getId()).get().getSSN() + "\n");
 
-        System.out.println("TESTING MANY TO ONE RELATIONSHIP");
-        System.out.println(patientRepository.findById(2L).get().getFamilyDoctor().getName() + "\n");
+        System.out.println("TESTING MANY TO ONE RELATIONSHIP -> Doctor of patient Jon Doe");
+        System.out.println("Patient's doctor name: " + patientRepository.findById(patient2.getId()).get().getFamilyDoctor().getName() + "\n");
 
         //ONE TO ONE
         DoctorOffice doctorOffice = new DoctorOffice("Bitola");
@@ -79,21 +79,21 @@ public class JpaHibernateApplication implements CommandLineRunner {
         doctorRepository.save(doctor1);
 
         System.out.println("TESTING DOCTOR OFFICE");
-        System.out.println(doctorOfficeRepository.findById(5L).get().getLocation());
+        System.out.println("Doctor office location: " + doctorOfficeRepository.findById(doctorOffice.getId()).get().getLocation() + "\n");
 
-        System.out.println("TESTING ONE TO ONE RELATIONSHIP - DOCTOR OFFICE SIDE");
-        System.out.println(doctorOfficeRepository.findById(7L).get().getDoctor().getName());
+        System.out.println("TESTING ONE TO ONE RELATIONSHIP - DOCTOR OFFICE SIDE -> Doctor of the office in Bitola");
+        System.out.println(doctorOfficeRepository.findById(doctorOffice.getId()).get().getDoctor().getName() + "\n");
 
-        System.out.println("TESTING ONE TO ONE RELATIONSHIP - DOCTOR SIDE");
-        System.out.println(doctorRepository.findById(1L).get().getDoctorOffice().getLocation());
+        System.out.println("TESTING ONE TO ONE RELATIONSHIP - DOCTOR SIDE -> Office's location of doctor Hannibal Lecter");
+        System.out.println(doctorRepository.findById(doctor2.getId()).get().getDoctorOffice().getLocation() + "\n");
 
         //MANY TO MANY
         Surgery surgery = new Surgery(new Date());
         surgeryRepository.save(surgery);
 
         System.out.println("TESTING SURGERY");
-        System.out.println(surgeryRepository.findById(8L).get().getSurgeryTime());
-        
+        System.out.println("Surgery time: " + surgeryRepository.findById(surgery.getId()).get().getSurgeryTime() + "\n");
+
         surgery.setDoctors(Stream.of(doctor1, doctor2).collect(Collectors.toSet()));
         surgeryRepository.save(surgery);
 
@@ -102,10 +102,10 @@ public class JpaHibernateApplication implements CommandLineRunner {
         doctorRepository.save(doctor1);
         doctorRepository.save(doctor2);
 
-        System.out.println("TESTING MANY TO MANY - SURGERY SIDE");
-        surgeryRepository.findById(8L).get().getDoctors().stream().forEach(doctor -> System.out.println("Doctor name: " + doctor.getName()));
+        System.out.println("TESTING MANY TO MANY - SURGERY SIDE -> Doctors of the surgery");
+        surgeryRepository.findById(surgery.getId()).get().getDoctors().stream().forEach(doctor -> System.out.println("Doctor name: " + doctor.getName()));
 
-        System.out.println("TESTING MANY TO MANY - DOCTOR SIDE");
-        doctorRepository.findById(1L).get().getSurgeries().stream().forEach(surgery1 -> System.out.println("Surgery id: " + surgery.getId()));
+        System.out.println("TESTING MANY TO MANY - DOCTOR SIDE -> Surgeries for Dr. House");
+        doctorRepository.findById(doctor1.getId()).get().getSurgeries().stream().forEach(surgery1 -> System.out.println("Surgery id: " + surgery.getId()));
     }
 }

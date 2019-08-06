@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,7 +32,7 @@ public class Doctor {
     @JoinTable(name = "surgery_doctors",
             joinColumns = @JoinColumn(name = "doctor_id"),
             inverseJoinColumns = @JoinColumn(name = "surgery_id"))
-    private Set<Surgery> surgeries;
+    private Set<Surgery> surgeries = new HashSet<>();
 
     public Doctor(String name, Specialization specialization) {
         this.name = name;

@@ -1,9 +1,6 @@
 package com.homework.jpahibernate;
 
-import com.homework.jpahibernate.model.Doctor;
-import com.homework.jpahibernate.model.DoctorOffice;
-import com.homework.jpahibernate.model.Patient;
-import com.homework.jpahibernate.model.Specialization;
+import com.homework.jpahibernate.model.*;
 import com.homework.jpahibernate.repository.DoctorOfficeRepository;
 import com.homework.jpahibernate.repository.DoctorRepository;
 import com.homework.jpahibernate.repository.PatientRepository;
@@ -14,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -89,5 +87,26 @@ public class JpaHibernateApplication implements CommandLineRunner {
         System.out.println("TESTING ONE TO ONE RELATIONSHIP - DOCTOR SIDE");
         System.out.println(doctorRepository.findById(1L).get().getDoctorOffice().getLocation());
 
+        //MANY TO MANY
+        Surgery surgery = new Surgery(new Date());
+        surgeryRepository.save(surgery);
+
+        System.out.println("TESTING SURGERY");
+        System.out.println(surgeryRepository.findById(8L).get().getSurgeryTime());
+
+
+        surgery.setDoctors(Stream.of(doctor1, doctor2).collect(Collectors.toSet()));
+        surgeryRepository.save(surgery);
+
+        doctor1.getSurgeries().add(surgery);
+        doctor2.getSurgeries().add(surgery);
+        doctorRepository.save(doctor1);
+        doctorRepository.save(doctor2);
+
+        System.out.println("TESTING MANY TO MANY - SURGERY SIDE");
+        surgeryRepository.findById(8L).get().getDoctors().stream().forEach(doctor -> System.out.println("Doctor name: " + doctor.getName()));
+
+        System.out.println("TESTING MANY TO MANY - DOCTOR SIDE");
+        doctorRepository.findById(1L).get().getSurgeries().stream().forEach(surgery1 -> System.out.println("Surgery id: " + surgery.getId()));
     }
 }
